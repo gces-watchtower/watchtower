@@ -1,6 +1,7 @@
 package flags
 
 import (
+	//"fmt"
 	"io/ioutil"
 	"os"
 	"strings"
@@ -104,6 +105,12 @@ func RegisterSystemFlags(rootCmd *cobra.Command) {
 		"R",
 		viper.GetBool("WATCHTOWER_RUN_ONCE"),
 		"Run once now and exit")
+
+	flags.IntP(
+		"poll-time",
+		"",
+		viper.GetInt("WATCHTOWER_POLL_TIME"),
+		"Set the poll interval for containers where com.centurylinklabs.watchtower.poll_time are set (in seconds)")
 
 	flags.BoolP(
 		"include-restarting",
@@ -316,6 +323,7 @@ func SetDefaults() {
 	viper.SetDefault("DOCKER_HOST", "unix:///var/run/docker.sock")
 	viper.SetDefault("DOCKER_API_VERSION", DockerAPIMinVersion)
 	viper.SetDefault("WATCHTOWER_POLL_INTERVAL", day)
+	viper.SetDefault("WATCHTOWER_POLL_TIME", day)
 	viper.SetDefault("WATCHTOWER_TIMEOUT", time.Second*10)
 	viper.SetDefault("WATCHTOWER_NOTIFICATIONS", []string{})
 	viper.SetDefault("WATCHTOWER_NOTIFICATIONS_LEVEL", "info")

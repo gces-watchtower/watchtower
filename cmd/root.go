@@ -31,6 +31,7 @@ var (
 	noRestart      bool
 	monitorOnly    bool
 	enableLabel    bool
+	pollTime			 int
 	notifier       *notifications.Notifier
 	timeout        time.Duration
 	lifecycleHooks bool
