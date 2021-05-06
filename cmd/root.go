@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"fmt"
 	metrics2 "github.com/containrrr/watchtower/pkg/metrics"
 	"os"
 	"os/signal"

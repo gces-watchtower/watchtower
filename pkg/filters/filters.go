@@ -67,10 +67,30 @@ func FilterByScope(scope string, baseFilter t.Filter) t.Filter {
 	}
 }
 
+// FilterByPoll returns all containers that has the poll time label set
+func FilterByPollTime(polls []int, baseFilter t.Filter) t.Filter {
+
+	if len(polls) == 0 {
+		return baseFilter
+	}
+
+	return func(c t.FilterableContainer) bool {
+		for _, pollTime := range polls {
+			if (pollTime == c.PollTime()) {
+				return baseFilter(c)
+			}
+		}
+		return false
+	}
+
+}
+
 // BuildFilter creates the needed filter of containers
-func BuildFilter(names []string, enableLabel bool, scope string) t.Filter {
+func BuildFilter(names []string, enableLabel bool, scope string, pollTime []int) t.Filter {
 	filter := NoFilter
 	filter = FilterByNames(names, filter)
+	filter = FilterByPollTime(pollTime, filter)
+	
 	if enableLabel {
 		// If label filtering is enabled, containers should only be considered
 		// if the label is specifically set.
@@ -81,6 +101,7 @@ func BuildFilter(names []string, enableLabel bool, scope string) t.Filter {
 		// if the scope is specifically set.
 		filter = FilterByScope(scope, filter)
 	}
+
 	filter = FilterByDisabledLabel(filter)
 	return filter
 }
