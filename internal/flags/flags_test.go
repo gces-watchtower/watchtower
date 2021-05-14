@@ -4,6 +4,7 @@ import (
 	"io/ioutil"
 	"os"
 	"testing"
+	"time"
 
 	"github.com/spf13/cobra"
 	"github.com/stretchr/testify/assert"
@@ -48,6 +49,22 @@ func TestGetSecretsFromFilesWithString(t *testing.T) {
 	require.NoError(t, err)
 
 	testGetSecretsFromFiles(t, "notification-email-server-password", value)
+}
+
+func TestPollTimeFlag(t *testing.T) {
+	cmd := new(cobra.Command)
+	SetDefaults()
+	RegisterDockerFlags(cmd)
+	RegisterSystemFlags(cmd)
+
+	time := (time.Hour * 24).Seconds()
+	day := int(time)
+	err := cmd.ParseFlags([]string{"--poll-time"})
+
+	pollTime, err := cmd.PersistentFlags().GetInt("poll-time")
+	require.NoError(t, err)
+
+	assert.Equal(t, day, pollTime)
 }
 
 func TestGetSecretsFromFilesWithFile(t *testing.T) {

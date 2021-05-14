@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"fmt"
 	metrics2 "github.com/containrrr/watchtower/pkg/metrics"
 	"os"
 	"os/signal"
@@ -152,8 +151,16 @@ func Run(c *cobra.Command, names []string) {
 	runOnce, _ := c.PersistentFlags().GetBool("run-once")
 	enableUpdateAPI, _ := c.PersistentFlags().GetBool("http-api-update")
 	enableMetricsAPI, _ := c.PersistentFlags().GetBool("http-api-metrics")
+	pollTime, _ := c.PersistentFlags().GetInt("poll-time")
 
 	apiToken, _ := c.PersistentFlags().GetString("http-api-token")
+
+	if pollTime != 0 {
+	
+		log.Info("Running with poll-time")
+		os.Exit(0)
+		return
+	}
 
 	if runOnce {
 		if noStartupMessage, _ := c.PersistentFlags().GetBool("no-startup-message"); !noStartupMessage {
