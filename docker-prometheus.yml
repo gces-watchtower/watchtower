@@ -1,0 +1,23 @@
+version: '3.7'
+
+services:
+  prometheus:
+    container_name: prometheus
+    image: prom/prometheus
+    volumes:
+      - ./prometheus/:/etc/prometheus/
+      - prometheus:/prometheus/
+    ports:
+      - 9090:9090
+    networks:
+      - watchtower
+      - default
+
+
+volumes:
+  prometheus: {}
+
+networks:
+  watchtower:
+    external:
+      name: watchtower
