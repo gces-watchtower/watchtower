@@ -41,3 +41,8 @@ services:
 volumes:
   prometheus: {}
   grafana: {}
+
+networks:
+  watchtower:
+    external:
+      name: watchtower
